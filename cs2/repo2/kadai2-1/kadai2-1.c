@@ -126,7 +126,7 @@ boolean is_strongly_connected(adjmatrix matrix, int vertex_num) {
         }
 
         // target_matrix = matrix^1 + matrix^2 + ... + matrix^(vertex_num-1)
-        for (int exponent = 1; exponent < vertex_num; exponent++) {
+        for (int exponent = 1; exponent < vertex_num + 1; exponent++) { // vertex_num -> vertex_num - 1
                 // pwrd_matrix = matrix^exponent
                 pow_matrix(pwrd_matrix, matrix, exponent, vertex_num); 
 
@@ -141,7 +141,7 @@ boolean is_strongly_connected(adjmatrix matrix, int vertex_num) {
          */
         for (int i = 0; i < vertex_num; i++) {
                 for (int j = 0; j < vertex_num; j++) {
-                        if (i != j && target_matrix[i][j] == 0) {
+                        if (target_matrix[i][j] == 0) { 
                                 return false;
                         }
                 }
