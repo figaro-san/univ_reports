@@ -1,0 +1,5 @@
+#!/bin/sh
+cd ../dot_files/
+for file in *.dot; do 
+        neato -Tpdf -o../pdf_files/${file%.dot}.pdf $file
+done

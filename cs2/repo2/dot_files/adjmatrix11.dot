@@ -1,0 +1,7 @@
+digraph G {
+  size="11.5.8"; node[fontsize=10,height=0.01,width=0.01]; edge[len=3.0];
+  1 -> 2;
+  2 -> 3;
+  3 -> 4;
+  4 -> 2;
+}

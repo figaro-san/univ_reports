@@ -1,0 +1,5 @@
+#!/bin/sh
+cd ../dat_files/
+for file in *.dat; do 
+	../read_adjmatrix/read_adjmatrix $file > ../dot_files/${file%.dat}.dot
+done
