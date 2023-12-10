@@ -68,17 +68,6 @@ void print_matrix(adjmatrix matrix, int vertex_num) {
         }
 }
 
-void multi_matrix(adjmatrix ans, adjmatrix matrix_1, adjmatrix matrix_2, int vertex_num) {
-        int i, j, k;
-        for(i = 0; i < vertex_num; i++){
-                for(j = 0; j < vertex_num; j++){
-                        for(k = 0; k < vertex_num; k++){
-                                ans[i][j] += matrix_1[i][k] * matrix_2[k][j];
-                        }
-                }
-        }
-}
-
 void copy_matrix(adjmatrix dest, adjmatrix src, int vertex_num) {
         for (int i = 0; i < vertex_num; i++) {
                 for (int j = 0; j < vertex_num; j++) {
@@ -87,25 +76,19 @@ void copy_matrix(adjmatrix dest, adjmatrix src, int vertex_num) {
         } 
 }
 
-void init_matrix(adjmatrix matrix, int vertex_num) {
-        for (int i = 0; i < vertex_num; i++) {
-                for (int j = 0; j < vertex_num; j++) {
-                        matrix[i][j] = 0;
+void multi_matrix(adjmatrix ans, adjmatrix matrix_1, adjmatrix matrix_2, int vertex_num) {
+        int i, j, k;
+        adjmatrix tmp = {0};
+        for(i = 0; i < vertex_num; i++){
+                for(j = 0; j < vertex_num; j++){
+                        for(k = 0; k < vertex_num; k++){
+                                tmp[i][j] += matrix_1[i][k] * matrix_2[k][j];
+                        }
                 }
         }
-}
 
-void pow_matrix(adjmatrix ans, adjmatrix base, int exponent, int vertex_num) {
-        adjmatrix tmp;
-        copy_matrix(tmp, base, vertex_num); // tmp = base
-        
-        copy_matrix(ans, base, vertex_num); // if exponent == 1, for loop does not run
-        
-        for (int i = 0; i < exponent-1; i++) {               
-                init_matrix(ans, vertex_num);                   // ans = 0
-                multi_matrix(ans, tmp, base, vertex_num);       // ans = tmp(i==1 then tmp=base, else tmp=ans) * base
-                copy_matrix(tmp, ans, vertex_num);              // tmp = ans
-        }
+        // ans = tmp
+        copy_matrix(ans, tmp, vertex_num);
 }
 
 void add_matrix(adjmatrix ans, adjmatrix matrix_1, adjmatrix matrix_2, int vertex_num) {
@@ -120,19 +103,23 @@ boolean is_strongly_connected(adjmatrix matrix, int vertex_num) {
         adjmatrix pwrd_matrix = {0};
         adjmatrix target_matrix = {0};
 
+        // pwrd_matrix = matrix^1
+        copy_matrix(pwrd_matrix, matrix, vertex_num);
+        // target_matrix = matrix^1
+        copy_matrix(target_matrix, matrix, vertex_num);
+
         if (vertex_num <= 1) {
                 fprintf(stderr, "[+] Error: 強連結を判定するには頂点数が少なすぎます。\n");
                 exit(1);
         }
 
-        // target_matrix = matrix^1 + matrix^2 + ... + matrix^(vertex_num-1)
-        for (int exponent = 1; exponent < vertex_num + 1; exponent++) { // vertex_num -> vertex_num + 1
-                // pwrd_matrix = matrix^exponent
-                pow_matrix(pwrd_matrix, matrix, exponent, vertex_num); 
+        // target_matrix = matrix^2 + matrix^3 + ... + matrix^(vertex_num)
+       for (int exponent = 2; exponent <= vertex_num; exponent++) { // vertex_num -> vertex_num + 1
+                // pwrd_matrix = pwrd_matrix * matrix
+                multi_matrix(pwrd_matrix, pwrd_matrix, matrix, vertex_num);
 
                 // target_matrix = target_matrix + pwrd_matrix
                 add_matrix(target_matrix, target_matrix, pwrd_matrix, vertex_num); 
-
         }
 
         /* 
