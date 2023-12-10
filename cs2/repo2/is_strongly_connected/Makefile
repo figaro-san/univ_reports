@@ -1,2 +1,2 @@
-is_strongly_connected : is_strongly_connected.c
-	gcc -o is_strongly_connected is_strongly_connected.c -g -Wall
+kadai2-1 : kadai2-1.c
+	gcc -o kadai2-1 kadai2-1.c -g -Wall
