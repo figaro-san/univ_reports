@@ -2,6 +2,6 @@
 cd ../dat_files/
 for file in *.dat; do
         echo $file
-        ../is_strongly_connected//kadai2-1 $file
+        ../kadai2-1/kadai2-1 $file
         echo
 done
