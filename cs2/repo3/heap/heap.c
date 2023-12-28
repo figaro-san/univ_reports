@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
@@ -14,26 +15,56 @@ double gettime()
         return ret;
 }
 
-void bubble(int *a, int n)
-{
-        int i, j;
+void swap(int *a, int *b) {
+	int temp = *a;
+	*a = *b;
+	*b = temp;
 
-        for (i = 1; i <= n-1; i++) {
-                for (j = n-1; j >= i; j--) {
-                        if(a[j-1] > a[j]) {
-                                int x = a[j-1];
-                                a[j-1] = a[j];
-                                a[j] = x;
-                        }
-                }
+}
 
-                if (debug) {
-                        for (j = 0; j < n; j++) {
-                                printf("%d\n", a[j]);
-                        }
-                        printf("\n");
-                }
-        }
+void sift(int *data_p, int i, int n) {
+	int k = i;
+
+	//j != k を満たすため
+	int j = k+1;
+
+	while (j != k) {
+		j = k;
+		
+		//左の子が親より大きいなら、後に入れ替える
+		if (2*j+1 < n && data_p[2*j+1] > data_p[k]) {
+			k = 2*j+1;
+		}
+
+		//右の子が親より大きいなら、後に入れ替える
+		if (2*j+2 < n && data_p[2*j+2] > data_p[k]) {
+			k = 2*j+2;
+		}
+
+		//子と親の大小関係が正しくないなら入れ替える。大小関係が正しいなら、自分自身と入れ替える(実質何もしないのと同じ)
+		//大小関係が正しいならj==kなのでループが終了。
+		swap(&data_p[j], &data_p[k]);
+	}
+}
+
+void make_heap(int *data_p, int n) {
+ 	 // 親の数は要素数/2。ヒープの特性上、配列の先頭から要素数/2までが親の要素となる。c言語は0から始まるので(要素数/2)-1が実際の配列のインデックスとなる。
+ 	// 一番下(グラフ上では一番下かつ最も左)の親から、ヒープの条件を満たすように並べ替えていく
+	for (int i = n/2-1 ; i >= 0; i--) {
+		sift(data_p, i, n);
+	}
+}
+
+void heap_sort(int *data_p, int n) {
+	make_heap(data_p, n);
+
+	for (int i = n-1; i >= 1; i--) {
+		//ヒープであるように並べ替えられると、配列の先頭が最も大きい値を持っているので、それを配列の最後と交換する
+		swap(&data_p[0], &data_p[i]);
+
+		// 入れ替え後に、次に大きい値を根へ持ってくる
+		sift(data_p, 0, i);
+	}
 }
 
 int main(int argc, char *argv[])
@@ -69,17 +100,19 @@ int main(int argc, char *argv[])
                 fscanf(fp, "%d", &data[i]);
         fclose(fp);
         
-        // バブルソートの実行と、実行時間の計測
+         
+        //バブルソートの実行と、実行時間の計測
         time_start = gettime();
-        bubble(data, n);
+        heap_sort(data, n);
         time_end = gettime();
-
+        
         // 計測結果とソートされた配列の出力
-        // fprintf(stdout, "バブルソートの実行時間 = %1f[秒]\n", time_end - time_start);
+        // fprintf(stdout, "ヒープソートの実行時間 = %1f[秒]\n", time_end - time_start);
         for (i = 0; i < n; i++) 
                 printf("%d\n", data[i]);
 
         free(data);
+
         return 0;
 
 }
