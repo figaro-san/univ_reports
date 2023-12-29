@@ -1,3 +1,4 @@
+// O(nlogn)
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
@@ -10,7 +11,7 @@ double gettime()
         struct timeval tp;
         double ret;
         gettimeofday(&tp, NULL);
-        ret = (double)(tp.tv_sec & 0x00ffffff) + (double)tp.tv_sec / 1000000;
+        ret = (double)(tp.tv_sec & 0x00ffffff) + (double)tp.tv_usec / 1000000;
         return ret;
 }
 
@@ -113,9 +114,9 @@ int main(int argc, char *argv[]) {
         m_sort(data, 0, n-1);
         time_end = gettime();
 
-        // fprintf(stderr, "マージソートの実行時間 = %1f[秒]\n", time_end-time_start);
-        for (i = 0; i < n; i++)
-                printf("%d\n", data[i]);
+        fprintf(stderr, "マージソートの実行時間 = %1f[秒]\n", time_end-time_start);
+        /*for (i = 0; i < n; i++)
+                printf("%d\n", data[i]);*/
 
         free(data);
         free(gamm);

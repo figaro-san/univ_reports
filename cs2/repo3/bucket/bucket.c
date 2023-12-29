@@ -1,4 +1,5 @@
-// O(n^2)
+// 平均O(n+k)
+// 最悪O(n^2)
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
@@ -15,26 +16,15 @@ double gettime()
         return ret;
 }
 
-void bubble(int *a, int n)
-{
-        int i, j;
+void swap(int *a, int *b) {
+	int temp = *a;
+	*a = *b;
+	*b = temp;
 
-        for (i = 1; i <= n-1; i++) {
-                for (j = n-1; j >= i; j--) {
-                        if(a[j-1] > a[j]) {
-                                int x = a[j-1];
-                                a[j-1] = a[j];
-                                a[j] = x;
-                        }
-                }
+}
 
-                if (debug) {
-                        for (j = 0; j < n; j++) {
-                                printf("%d\n", a[j]);
-                        }
-                        printf("\n");
-                }
-        }
+void bucket_sort(int *data_p, int n) {
+
 }
 
 int main(int argc, char *argv[])
@@ -70,17 +60,19 @@ int main(int argc, char *argv[])
                 fscanf(fp, "%d", &data[i]);
         fclose(fp);
         
-        // バブルソートの実行と、実行時間の計測
+         
+        //バブルソートの実行と、実行時間の計測
         time_start = gettime();
-        bubble(data, n);
+        bucket_sort(data, n);
         time_end = gettime();
-
+        
         // 計測結果とソートされた配列の出力
-        fprintf(stdout, "バブルソートの実行時間 = %1f[秒]\n", time_end - time_start);
-        /*for (i = 0; i < n; i++) 
-                printf("%d\n", data[i]);*/
-
+        //fprintf(stdout, "クイックソートの実行時間 = %1f[秒]\n", time_end - time_start);
+        for (i = 0; i < n; i++) 
+                printf("%d\n", data[i]);
+        
         free(data);
+
         return 0;
 
 }

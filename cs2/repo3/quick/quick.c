@@ -1,4 +1,5 @@
-// O(nlogn)
+// 平均O(nlogn)
+// 最悪O(N^2)
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
@@ -22,49 +23,43 @@ void swap(int *a, int *b) {
 
 }
 
-void sift(int *data_p, int i, int n) {
-	int k = i;
+void subsort(int *data_p, int n, int s, int t) {
+	int i = s;
+	int j = t;
+	int x = data_p[(s+t)/2]; //配列の大体中心の要素を選ぶ
 
-	//j != k を満たすため
-	int j = k+1;
+	//i > jになるまで実行することで、渡された配列中を、基準を元に2分割する
+	while (i <= j) {
+		//配列[0]から調べて、xより小さいなら、そのまま次の要素を調べに行く。大きいなら、その要素が格納されている場所のインデックスで止まる
+		while (data_p[i] < x) 
+			i++;
 
-	while (j != k) {
-		j = k;
-		
-		//左の子が親より大きいなら、後に入れ替える
-		if (2*j+1 < n && data_p[2*j+1] > data_p[k]) {
-			k = 2*j+1;
+		//配列[n-1](最後尾)から調べて、xより大きいなら次の要素を調べに行く。小さいなら、その要素が格納されている場所のインデックスで止まる
+		while (x < data_p[j])
+			j--;
+
+		//基準より小さい要素を、基準が格納されている場所より前、大きい要素を後ろに配置したいので
+		//上記で止まった場所(それぞれ、小さい要素のエリアに大きい要素が見つかった場所のインデックス、と大きい要素のエリアに小さい要素が見つかった場所のインデックス)
+		//を元にして入れ替える
+		if (i <= j) {
+			swap(&data_p[i], &data_p[j]);
+			i++;
+			j--;
 		}
-
-		//右の子が親より大きいなら、後に入れ替える
-		if (2*j+2 < n && data_p[2*j+2] > data_p[k]) {
-			k = 2*j+2;
-		}
-
-		//子と親の大小関係が正しくないなら入れ替える。大小関係が正しいなら、自分自身と入れ替える(実質何もしないのと同じ)
-		//大小関係が正しいならj==kなのでループが終了。
-		swap(&data_p[j], &data_p[k]);
 	}
+
+	//この時点で、jが基準が格納される場所よりより一つ下の場所を指し、iが基準の場所より一つ上の場所を指す
+	//基準より小さい要素のエリアについてソートする
+	if (s < j)
+		subsort(data_p, n, s, j);
+
+	//基準より大きい要素のエリアについてソートする
+	if (i < t) 
+		subsort(data_p, n, i, t);
 }
 
-void make_heap(int *data_p, int n) {
- 	 // 親の数は要素数/2。ヒープの特性上、配列の先頭から要素数/2までが親の要素となる。c言語は0から始まるので(要素数/2)-1が実際の配列のインデックスとなる。
- 	// 一番下(グラフ上では一番下かつ最も左)の親から、ヒープの条件を満たすように並べ替えていく
-	for (int i = n/2-1 ; i >= 0; i--) {
-		sift(data_p, i, n);
-	}
-}
-
-void heap_sort(int *data_p, int n) {
-	make_heap(data_p, n);
-
-	for (int i = n-1; i >= 1; i--) {
-		//ヒープであるように並べ替えられると、配列の先頭が最も大きい値を持っているので、それを配列の最後と交換する
-		swap(&data_p[0], &data_p[i]);
-
-		// 入れ替え後に、次に大きい値を根へ持ってくる
-		sift(data_p, 0, i);
-	}
+void quick_sort(int *data_p, int n) {
+	subsort(data_p, n, 0, n-1);	
 }
 
 int main(int argc, char *argv[])
@@ -103,15 +98,14 @@ int main(int argc, char *argv[])
          
         //バブルソートの実行と、実行時間の計測
         time_start = gettime();
-        heap_sort(data, n);
+        quick_sort(data, n);
         time_end = gettime();
         
         // 計測結果とソートされた配列の出力
-        fprintf(stdout, "ヒープソートの実行時間 = %1f[秒]\n", time_end - time_start);
+        fprintf(stdout, "クイックソートの実行時間 = %1f[秒]\n", time_end - time_start);
         /*for (i = 0; i < n; i++) 
-                printf("%d\n", data[i]);
-        */
-
+                printf("%d\n", data[i]);*/
+        
         free(data);
 
         return 0;
