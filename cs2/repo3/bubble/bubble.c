@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
         time_end = gettime();
 
         // 計測結果とソートされた配列の出力
-        fprintf(stdout, "バブルソートの実行時間 = %1f[秒]\n", time_end - time_start);
+        fprintf(stderr, "バブルソートの実行時間 = %1f[秒]\n", time_end - time_start);
         /*for (i = 0; i < n; i++) 
                 printf("%d\n", data[i]);*/
 

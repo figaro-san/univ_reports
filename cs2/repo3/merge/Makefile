@@ -1,2 +1,2 @@
 merge : merge.c
-	gcc -o merge merge.c
+	gcc -O2 -o merge merge.c

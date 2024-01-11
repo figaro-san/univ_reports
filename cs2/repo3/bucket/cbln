@@ -1,0 +1,27 @@
+#!/bin/sh
+# change buckets lock n
+
+echo
+echo './bucket ../data/under10K.dat  1000000 10000 '
+./bucket ../data/under10K.dat  1000000 10000      #| awk '{print 10000,      $3}' | tr "[秒]" " "
+echo
+
+echo './bucket ../data/under100K.dat 1000000 100000'
+./bucket ../data/under100K.dat 1000000 100000     #| awk '{print 100000,     $3}' | tr "[秒]" " "
+echo
+
+echo './bucket ../data/under1M.dat   1000000 1000000'
+./bucket ../data/under1M.dat   1000000 1000000    #| awk '{print 1000000,    $3}' | tr "[秒]" " "
+echo
+
+echo './bucket ../data/under10M.dat  1000000 10000000'
+./bucket ../data/under10M.dat  1000000 10000000   #| awk '{print 10000000,   $3}' | tr "[秒]" " "
+echo 
+
+echo './bucket ../data/under100M.dat 1000000 100000000'
+./bucket ../data/under100M.dat 1000000 100000000  #| awk '{print 100000000,  $3}' | tr "[秒]" " "
+echo
+
+echo './bucket ../data/under1G.dat   1000000 1000000000'
+./bucket ../data/under1G.dat   1000000 1000000000 #| awk '{print 1000000000, $3}' | tr "[秒]" " "
+echo

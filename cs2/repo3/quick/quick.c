@@ -96,13 +96,13 @@ int main(int argc, char *argv[])
         fclose(fp);
         
          
-        //バブルソートの実行と、実行時間の計測
+        //ソートの実行と、実行時間の計測
         time_start = gettime();
         quick_sort(data, n);
         time_end = gettime();
         
         // 計測結果とソートされた配列の出力
-        fprintf(stdout, "クイックソートの実行時間 = %1f[秒]\n", time_end - time_start);
+        fprintf(stderr, "クイックソートの実行時間 = %1f[秒]\n", time_end - time_start);
         /*for (i = 0; i < n; i++) 
                 printf("%d\n", data[i]);*/
         

@@ -1,0 +1,14 @@
+#!/bin/sh
+# lock buckets (under10K.dat), change n
+echo 
+echo './bucket ../data/under10K.dat 250000 10000'
+./bucket ../data/under10K.dat 250000 10000 #| awk '{print 250000, $3}' | tr "[秒]" " "
+echo 
+
+echo './bucket ../data/under10K.dat 500000 10000'
+./bucket ../data/under10K.dat 500000 10000 #| awk '{print 500000, $3}' | tr "[秒]" " "
+echo 
+
+echo './bucket ../data/under10K.dat 1000000 10000'
+./bucket ../data/under10K.dat 1000000 10000 #| awk '{print 1000000, $3}' | tr "[秒]" " "
+echo

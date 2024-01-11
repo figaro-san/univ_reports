@@ -16,15 +16,34 @@ double gettime()
         return ret;
 }
 
-void swap(int *a, int *b) {
-	int temp = *a;
-	*a = *b;
-	*b = temp;
+void bucket_sort(int *data_p, int n, int end) {
+        // 0 ~ (最大値-1)までの配列を用意する
+        int *bucket;
+        bucket = (int *)malloc(end * sizeof(int));
+        for (int i = 0; i < end; i++) {
+                bucket[i] = 0;
+        }
 
-}
+        int i;
 
-void bucket_sort(int *data_p, int n) {
+        // bucketは0 - (最大値-1)までの配列を持つ
+        // data_p[i]に格納されている値をインデックスとして、bucket[data_p[i]]に1を足す(その要素があることを示す)
+        for (i = 0; i < n ; i++) 
+                bucket[data_p[i]] += 1;
 
+
+        // 配列bucketを最初から最後まで走査する
+        // そもそも、bucketの中身にはindexと同じ値をしている要素が与えられたデータに何個あるかを示しているので、
+        // 要素があるとされている(bucket[i]>=1)ならその分だけループを回して元の配列へと順次要素を入れていくことで、最終的にソートされた状態になる
+        int index = 0;
+        for (i = 0; i < end; i++) {
+                for (int j = 0; j < bucket[i]; j++)  {
+                        data_p[index] = i;
+                        index++;
+                }
+        }
+
+        free(bucket);
 }
 
 int main(int argc, char *argv[])
@@ -48,6 +67,12 @@ int main(int argc, char *argv[])
         }
         n = atoi(argv[2]);                      // データ数の取得
         
+        if (argc <= 3) {
+                fprintf(stderr, "##### 最大値を指定してください\n");
+                return 1;
+        }
+        int end = atoi(argv[3]); 
+        
         // ファイルオープンとエラー処理
         if ((fp = fopen(datafile, "r")) == NULL) {
                 fprintf(stderr, "##### ファイルのオープンに失敗しました。");
@@ -60,16 +85,17 @@ int main(int argc, char *argv[])
                 fscanf(fp, "%d", &data[i]);
         fclose(fp);
         
-         
-        //バブルソートの実行と、実行時間の計測
+        //ソートの実行と、実行時間の計測
         time_start = gettime();
-        bucket_sort(data, n);
+        bucket_sort(data, n, end);
         time_end = gettime();
         
         // 計測結果とソートされた配列の出力
-        //fprintf(stdout, "クイックソートの実行時間 = %1f[秒]\n", time_end - time_start);
+        fprintf(stderr, "バケットソートの実行時間 = %1f[秒]\n", time_end - time_start);
+        /*
         for (i = 0; i < n; i++) 
                 printf("%d\n", data[i]);
+        */
         
         free(data);
 
