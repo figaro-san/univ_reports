@@ -103,8 +103,8 @@ int main(int argc, char *argv[])
         
         // 計測結果とソートされた配列の出力
         fprintf(stderr, "クイックソートの実行時間 = %1f[秒]\n", time_end - time_start);
-        /*for (i = 0; i < n; i++) 
-                printf("%d\n", data[i]);*/
+        for (i = 0; i < n; i++) 
+                printf("%d\n", data[i]);
         
         free(data);
 
