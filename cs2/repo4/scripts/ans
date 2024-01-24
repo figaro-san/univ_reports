@@ -1,0 +1,2 @@
+#!/bin/bash
+head -10000 ../data/for-select.dat | sort -n | head -123 | tail -1
