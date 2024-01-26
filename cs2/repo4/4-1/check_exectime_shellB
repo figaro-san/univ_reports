@@ -1,0 +1,12 @@
+#!/bin/bash
+check_exectime_shellB() {
+	./shellB/shellB ./data/for-select.dat $1 > /dev/null 
+}
+
+#check_exectime_shellB |& awk '{print $3}' | tr [秒] " "
+
+cd ../
+for ((i=10; i<100000000; i*=10)); do
+	echo -n -e "$i "
+	check_exectime_shellB $i |& awk '{print $3}' | tr [秒] " "
+done

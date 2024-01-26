@@ -1,3 +1,5 @@
+// 平均計算時間はO(n^1.25)
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
@@ -39,7 +41,7 @@ void shellB(int *a, int n)
 		}
 		k = k / 3;
 	}
-	
+
 }
 
 int main(int argc, char *argv[])

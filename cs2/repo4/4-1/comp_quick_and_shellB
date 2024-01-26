@@ -1,0 +1,4 @@
+#!/bin/bash
+cd ../../
+./repo4/shellB/shellB ./repo3/data/under10M.dat 1000000 > /dev/null
+./repo3/quick/quick ./repo3/data/under10M.dat 1000000 > /dev/null
