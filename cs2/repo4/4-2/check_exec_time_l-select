@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cd ../
+for ((data_num=10; data_num<=100000000; data_num*=10)); do
+	select_num=$(($data_num/2))
+
+	echo データ数 = $data_num, $select_num番目を選択
+
+	./l-select/l-select ./data/for-select.dat $data_num  $select_num
+	
+	echo ""
+done
+

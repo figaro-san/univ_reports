@@ -1,0 +1,8 @@
+#!/bin/bash
+cd ../
+
+echo select
+./select/select ./data/for-select.dat 20000000 10000
+
+echo l-select
+./l-select/l-select ./data/for-select.dat 20000000 10000

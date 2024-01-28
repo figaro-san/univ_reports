@@ -1,4 +1,4 @@
-// 平均計算時間はO(n^1.25)
+// O(n^1.25)
 
 #include <stdio.h>
 #include <stdlib.h>
